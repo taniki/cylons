@@ -1,0 +1,19 @@
+{
+  "author": "",
+  "name": "cylons",
+  "version": "0.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/taniki/cylons.git"
+  },
+  "dependencies": {
+    "ntwitter":"*",
+    "cli-color":"*",
+    "moment":"*"
+  },
+  "devDependencies": {},
+  "optionalDependencies": {},
+  "engines": {
+    "node": "*"
+  }
+}
