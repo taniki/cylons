@@ -27,12 +27,12 @@ function update_uptime(){
 	var current = new moment();
 	seconds = current.diff(time_start, "seconds");
 	console.log(seconds);
+	update_speed();
 }
 
 function update_count(){
 	process.stdout.write(cli.moveTo(8,2));
 	console.log(count);
-	update_speed();
 }
 
 function update_speed(){
@@ -41,7 +41,7 @@ function update_speed(){
 }
 
 twit.stream('statuses/filter',
-	{'track':'gaza'},
+	{'track':'gaza,apple,facebook,twitter'},
 	function(stream) {
 
 		stream.on('data', function (data) {
