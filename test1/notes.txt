@@ -1,0 +1,7 @@
+## test
+
+lecture concurente
+
+## observation
+
+impossible de lancer deux lectures du stream
