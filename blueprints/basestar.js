@@ -4,7 +4,7 @@ io.set('log level', 1);
 
 io.sockets.on('connection', function (socket) {
 
-	socket.emit('welcome',{ host: 'basestar-1' });
+	socket.emit('welcome',{ name: 'basestar-1' });
 
 	socket.on('tweet',function(data){
 //		io.sockets.in('warehouse').emit('tweet', data);
@@ -15,7 +15,6 @@ io.sockets.on('connection', function (socket) {
 	    });
 
 	});
-
 
 	socket.on('join_room', function(room){
 		socket.join(room);

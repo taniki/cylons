@@ -19,5 +19,5 @@ db.collection('tweets', function(err,tweets){
 });
 
 socket.on('welcome', function(server){
-	console.log('[ '+ server.host +' ] dans la place !');
+	console.log('[ '+ server.name +' ] dans la place !');
 });

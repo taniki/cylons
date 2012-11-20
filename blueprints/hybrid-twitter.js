@@ -24,8 +24,6 @@ console.log("tweets ");
 console.log("speed");
 
 var socket = io.connect('http://localhost:3010');
-socket.on('connect', function () {
-});
 
 function update_uptime(){
 	process.stdout.write(cli.moveTo(8,1));
