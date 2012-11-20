@@ -13,7 +13,6 @@ socket.on('connection', function(){
 db.collection('tweets', function(err,tweets){
 	socket.on('tweet', function(data){
 		tweets.update({ id_str : data.id_str }, data, {upsert:true }, function(err, result){
-
 		});
 	});
 });
