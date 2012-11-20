@@ -5,12 +5,6 @@ var twitter = require('ntwitter');
 var cli = require('cli-color');
 var moment = require('moment');
 
-var twit = new twitter({
-  consumer_key: '1nTj648YIiFJAPaZD3pw',
-  consumer_secret: '6AOQ5RKzJ6Y42oKWrFpI54sX0aWaX756kb7G8YG90E',
-  access_token_key: '1740241-BcveVF1tGmPBCF4CvImfuUJOToqa2N5fLuwlvb4',
-  access_token_secret: 'uXaywfk1wd00fG03jM8z9UbqZxWh4liqVTh9zifISk'
-});
 
 module.exports = function(personality){
 	var _this = this;
@@ -25,6 +19,8 @@ module.exports = function(personality){
 	console.log("uptime ");
 	console.log("tweets ");
 	console.log("speed");
+
+	var twit = new twitter(personality.credentials);
 
 	this.update_uptime = function(){
 		process.stdout.write(cli.moveTo(8,1));
@@ -50,8 +46,9 @@ module.exports = function(personality){
 	},1000);
 
 
-	twit.stream('statuses/filter',
-		personality,
+	twit.stream(
+		personality.endpoint,
+		personality.request,
 		function(stream) {
 
 			stream.on('data', function (data) {
