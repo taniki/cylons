@@ -19,8 +19,19 @@ module.exports = function(personality){
 	console.log("uptime ");
 	console.log("tweets ");
 	console.log("speed");
+	console.log("last");
 
 	var twit = new twitter(personality.credentials);
+
+	this.report = function(){
+		// should tell some statistics about performance
+
+		return {
+			last_second : 0,
+			last_minute : 0,
+			last_hour : 0
+		}
+	}
 
 	this.update_uptime = function(){
 		process.stdout.write(cli.moveTo(8,1));
@@ -56,6 +67,10 @@ module.exports = function(personality){
 				_this.update_count();
 
 				socket.emit('tweet', data);
+
+				process.stdout.write(cli.moveTo(8,4));
+				console.log(data.text);
+
 			});
 
 			stream.on('end', function (response) {

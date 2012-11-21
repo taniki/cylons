@@ -23,4 +23,14 @@ module.exports = function(personality){
 	socket.on('welcome', function(server){
 		console.log('[ '+ server.name +' ] dans la place !');
 	});
+
+	this.report = function(){
+		// should tell some statistics about performance
+
+		return {
+			last_second : 0,
+			last_minute : 0,
+			last_hour : 0
+		}
+	}
 }
