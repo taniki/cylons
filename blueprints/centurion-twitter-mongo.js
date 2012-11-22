@@ -1,5 +1,6 @@
 var io = require('socket.io-client');
 var socket = io.connect('http://localhost:3010');
+var moment = require('moment');
 
 var mongo = require('mongodb');
 
@@ -7,6 +8,7 @@ module.exports = function(personality){
 
 	var db = new mongo.Db('twitter', new mongo.Server(personality.mongo.host, personality.mongo.port, {auto_reconnect: true}));
 
+	this.time_start = new moment();
 	this.count = 0;
 
 	socket.on('connection', function(){

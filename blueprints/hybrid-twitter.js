@@ -5,7 +5,6 @@ var twitter = require('ntwitter');
 var cli = require('cli-color');
 var moment = require('moment');
 
-
 module.exports = function(personality){
 	var _this = this;
 
