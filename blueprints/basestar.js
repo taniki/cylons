@@ -61,10 +61,17 @@ app.get('/crew', function(req, res){
 app.get('/cylon/:socket', function(req, res){
 	var cylon_socket  = req.params.socket;
 
+	var cylon_data = {
+		info  : {},
+		report: {}
+	};
+
     res.header("Access-Control-Allow-Origin", "*");
 
     crew[cylon_socket].get('report', function(err, report){
-    	res.send(report);
+    	cylon_data.report = report;
+   	
+    	res.send(cylon_data);
     });
 });
 
