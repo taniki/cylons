@@ -50,7 +50,8 @@ setInterval(function(){
 }, 500);
 
 app.get('/crew', function(req, res){
+    res.header("Access-Control-Allow-Origin", "*");
 	res.send(_(crew).pluck('id'));
 });
 
-app.listen(3001);
+app.listen(3009);
