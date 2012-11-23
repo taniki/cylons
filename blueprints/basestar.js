@@ -18,6 +18,10 @@ io.sockets.on('connection', function (socket) {
 		socket.send(crew);
 	});
 
+	socket.on('set report', function(report){
+		socket.set('report', report);
+	});
+
 	socket.on('disconnect', function(){
 		delete crew[socket.id];		
 	});
@@ -52,6 +56,16 @@ setInterval(function(){
 app.get('/crew', function(req, res){
     res.header("Access-Control-Allow-Origin", "*");
 	res.send(_(crew).pluck('id'));
+});
+
+app.get('/cylon/:socket', function(req, res){
+	var cylon_socket  = req.params.socket;
+
+    res.header("Access-Control-Allow-Origin", "*");
+
+    crew[cylon_socket].get('report', function(err, report){
+    	res.send(report);
+    });
 });
 
 app.listen(3009);

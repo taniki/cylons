@@ -5,6 +5,7 @@ var moment = require('moment');
 var mongo = require('mongodb');
 
 module.exports = function(personality){
+	var _this = this;
 
 	var db = new mongo.Db('twitter', new mongo.Server(personality.mongo.host, personality.mongo.port, {auto_reconnect: true}));
 
@@ -35,4 +36,8 @@ module.exports = function(personality){
 			last_hour : 0
 		}
 	}
+
+	setInterval(function(){
+		socket.emit("set report", _this.report())
+	},1000);
 }

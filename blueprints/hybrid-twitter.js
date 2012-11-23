@@ -52,6 +52,7 @@ module.exports = function(personality){
 	}
 
 	setInterval(function(){
+		socket.emit("set report", _this.report())
 		_this.update_uptime();
 	},1000);
 
