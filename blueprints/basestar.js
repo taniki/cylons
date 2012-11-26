@@ -1,6 +1,6 @@
-var io = require('socket.io').listen(3010);
+var io 	= require('socket.io').listen(3010);
 var cli = require('cli-color');
-var _ = require('underscore');
+var _	= require('underscore');
 
 var express = require('express');
 var app = express();

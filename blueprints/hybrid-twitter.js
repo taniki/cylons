@@ -20,8 +20,6 @@ module.exports = function(personality){
 	console.log("speed");
 	console.log("last");
 
-	var twit = new twitter(personality.credentials);
-
 	this.report = function(){
 		// should tell some statistics about performance
 
@@ -57,30 +55,39 @@ module.exports = function(personality){
 	},1000);
 
 
-	twit.stream(
-		personality.endpoint,
-		personality.request,
-		function(stream) {
+	this.start = function(){
+		var twit = new twitter(personality.credentials);
 
-			stream.on('data', function (data) {
-				_this.count++;
-				_this.update_count();
+		twit.stream(
+			personality.endpoint,
+			personality.request,
+			function(stream) {
+				_this.count = 0;
 
-				socket.emit('tweet', data);
+				stream.on('data', function (data) {
+					_this.count++;
+					_this.update_count();
 
-				process.stdout.write(cli.moveTo(8,4));
-				console.log(data.text);
+					socket.emit('tweet', data);
 
-			});
+					process.stdout.write(cli.moveTo(8,4));
+					console.log(data.text);
 
-			stream.on('end', function (response) {
-	//			console.log('restart me');
-			});
+				});
 
-			stream.on('destroy', function (response) {
-	//			console.log('arrgghhh');
-			});
+				stream.on('end', function (response) {
+		//			console.log('restart me');
+//					_this.start();
+				});
 
-		}
-	);
+				stream.on('close', function (response) {
+		//			console.log('arrgghhh');
+				});
+
+//				setTimeout(stream.destroy, 5 * 1000);
+			}
+		);
+	}
+
+	this.start();
 }
