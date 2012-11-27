@@ -2,23 +2,36 @@ var io = require('socket.io-client');
 var socket = io.connect('http://localhost:3010');
 
 var twitter = require('ntwitter');
+
+var _ = require('underscore');
+
 var cli = require('cli-color');
 var moment = require('moment');
 
 module.exports = function(personality){
 	var _this = this;
 
+	this.request = {
+		track		: '',
+		follow		: '',
+		locations	: ''
+	}
+
+	this.request = _(this.request).extend(personality.request);
+
 	this.time_start = new moment();
 
 	this.count = 0;
 	this.seconds = 0;
+	this.count_restart = 0;
 
 	console.log(cli.reset);
 
 	console.log("uptime ");
+	console.log("restart");
 	console.log("tweets ");
 	console.log("speed");
-	console.log("last");
+	console.log("watch");
 
 	this.report = function(){
 		// should tell some statistics about performance
@@ -40,12 +53,12 @@ module.exports = function(personality){
 	}
 
 	this.update_count = function(){
-		process.stdout.write(cli.moveTo(8,2));
+		process.stdout.write(cli.moveTo(8,3));
 		console.log(this.count);
 	}
 
 	this.update_speed = function(){
-		process.stdout.write(cli.moveTo(8,3));
+		process.stdout.write(cli.moveTo(8,4));
 		console.log(this.count / this.seconds);
 	}
 
@@ -54,15 +67,52 @@ module.exports = function(personality){
 		_this.update_uptime();
 	},1000);
 
+	socket.on('send keywords-group', function(kws){
+		// detect change. could be done more properly
+		if(	_this.request.track != kws.join(',') ){
+			_this.request.track = kws.join(',');
+			
+			if(_stream){
+				_this.restart();
+			}
+
+			console.log(_this.request);
+		}
+	});	
+
+	this.restart = function(){
+		this.count_restart++;
+		process.stdout.write(cli.moveTo(8,2));
+		console.log(this.count_restart);
+
+		_stream.destroy();
+		_stream = undefined;
+ 		setTimeout(this.start, 2 * 1000);
+	}
+
+	var _stream;
 
 	this.start = function(){
 		var twit = new twitter(personality.credentials);
 
+		console.log(_this.request);
+		console.log(personality.request);
+
+		for(var k in _this.request){
+			if (_this.request[k] == '') {
+				delete _this.request[k];
+			}
+		}		
+
+		console.log(_this.request);
+
+
 		twit.stream(
 			personality.endpoint,
-			personality.request,
+			_this.request,
 			function(stream) {
 				_this.count = 0;
+				_stream = stream;
 
 				stream.on('data', function (data) {
 					_this.count++;
@@ -70,8 +120,8 @@ module.exports = function(personality){
 
 					socket.emit('tweet', data);
 
-					process.stdout.write(cli.moveTo(8,4));
-					console.log(data.text);
+//					process.stdout.write(cli.moveTo(8,4));
+//					console.log(data.text);
 
 				});
 

@@ -10,12 +10,23 @@ io.set('log level', 0);
 var crew = {};
 var inactives = {};
 
+var collectors = [
+	'send keywords',
+	'send keywords-group'
+];
+
 io.sockets.on('connection', function (socket) {
 
 	crew[socket.id] = socket;
 
 	socket.on('crew', function(){
 		socket.send(crew);
+	});
+
+	_(collectors).each(function(collection){
+		socket.on(collection, function(msg){
+			socket.broadcast.emit(collection, msg);
+		});
 	});
 
 	socket.on('set report', function(report){
@@ -41,6 +52,11 @@ io.sockets.on('connection', function (socket) {
 	socket.on('join_room', function(room){
 		socket.join(room);
 	});
+
+	socket.on('listen room', function(room){
+		socket.join(room);
+	});
+
 });
 
 function update_crew(){
