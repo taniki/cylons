@@ -14,7 +14,7 @@ module.exports = function(personality){
 	this.request = {
 		track		: '',
 		follow		: '',
-		locations	: ''
+		locations	: ' '
 	}
 
 	this.request = _(this.request).extend(personality.request);
@@ -60,6 +60,23 @@ module.exports = function(personality){
 	this.update_speed = function(){
 		process.stdout.write(cli.moveTo(8,4));
 		console.log(this.count / this.seconds);
+	}
+
+	this.report = function(){
+		var results = {
+			usage : {
+				track    : (this.request.track.split(',')).length,
+				follow	 : (this.request.follow.split(',')).length,
+				locations: 0
+			},
+			max : {
+				track    : 400,
+				follow	 : 5000,
+				locations: 25
+			}
+		};
+
+		return results;
 	}
 
 	setInterval(function(){

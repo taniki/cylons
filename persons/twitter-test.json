@@ -8,6 +8,7 @@
 	"endpoint": "statuses/filter",
 	"request" : {
 		"track" : "gaza",
-		"follow":"18576537"
+		"follow":"18576537",
+		"locations" : ""
 	}
 }

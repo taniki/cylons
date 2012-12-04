@@ -1,9 +1,12 @@
-var io 	= require('socket.io').listen(3010);
 var cli = require('cli-color');
 var _	= require('underscore');
 
-var express = require('express');
-var app = express();
+var app = require('express')();
+var server	= require('http').createServer(app);
+
+server.listen(3010);
+
+var io 	= require('socket.io').listen(server);
 
 io.set('log level', 0);
 
@@ -63,6 +66,12 @@ function update_crew(){
 	console.log(cli.reset);
 
 	console.log(_(crew).pluck('id'));
+
+	_(crew).each(function(c){
+		c.get('report', function(err, report){
+			console.log(report);
+		})
+	});
 }
 
 setInterval(function(){
@@ -90,5 +99,3 @@ app.get('/cylon/:socket', function(req, res){
     	res.send(cylon_data);
     });
 });
-
-app.listen(3009);

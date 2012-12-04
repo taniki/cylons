@@ -27,8 +27,19 @@ module.exports = function(personality){
 
 	});
 
+	this.report = function(){
+		return {
+			size : _(all_keywords).size()
+		}
+
+	}
 
 	setInterval(function(){
+		all_keywords = [];
+	}, 10000);
+
+	setInterval(function(){
+		socket.emit("set report", _this.report())
 		socket.emit( 'send keywords-group', all_keywords );
 	}, 1000);
 }
