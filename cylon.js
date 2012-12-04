@@ -19,17 +19,24 @@ function cylon(){
 	this.start = function(){
 		console.log("bzz bzz");
 
-
 		fs.readFile(this.identity, 'utf8', function (err, personality) {
 		  if (err) {
 		    return console.log(err);
 		  }
 
+
+		  fs.watch(_this.identity, function(e ,f){
+		  	_this.reload();
+		  });
+
 		  var personality = JSON.parse(personality);
 
           _this.body = require('./blueprints/'+_this.model)(personality);
 		});
+	}
 
+	this.reload = function(){
+		console.log('dying');
 	}
 }
 

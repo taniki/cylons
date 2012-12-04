@@ -29,6 +29,10 @@ module.exports = function(personality){
 		day		: []
 	}
 
+	this.restart = function(){
+		
+	}
+
 	// Collect and tag tweets
 	socket.on('tweet', function(data){
 
