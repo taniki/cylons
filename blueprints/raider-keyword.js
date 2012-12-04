@@ -35,12 +35,18 @@ module.exports = function(personality){
 		var ok = false;
 		var matches = [];
 
-		_(keywords).each(function(k){
-			if(data.text.indexOf(k) != -1){
+		var kw = _(keywords).clone();
+
+		_(kw).each(function(k){
+			kw.push("#"+k);
+			kw.push("@"+k);
+		});
+
+		_(kw).each(function(k){
+			if(data.text.toLowerCase().indexOf(k) != -1){
 
 				ok = true;
 				matches.push(k);
-
 			}
 		});
 

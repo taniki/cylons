@@ -35,7 +35,7 @@ module.exports = function(personality){
 	}
 
 	setInterval(function(){
-		all_keywords = [];
+//		all_keywords = [];
 	}, 10000);
 
 	setInterval(function(){
