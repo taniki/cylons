@@ -25,6 +25,8 @@ module.exports = function(personality){
 	this.seconds = 0;
 	this.count_restart = 0;
 
+	var twit = new twitter(personality.credentials);
+
 	console.log(cli.reset);
 
 	console.log("uptime ");
@@ -103,14 +105,13 @@ module.exports = function(personality){
 		console.log(this.count_restart);
 
 		_stream.destroy();
-		_stream = undefined;
+//		_stream = undefined;
  		setTimeout(this.start, 2 * 1000);
 	}
 
 	var _stream;
 
 	this.start = function(){
-		var twit = new twitter(personality.credentials);
 
 		console.log(_this.request);
 		console.log(personality.request);
