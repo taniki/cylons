@@ -1,7 +1,4 @@
-var fs = require('fs');
-
-var io = require('socket.io-client');
-var socket = io.connect('http://localhost:3010');
+var model = require('./model');
 
 var twitter = require('ntwitter');
 
@@ -12,21 +9,6 @@ var moment = require('moment');
 
 module.exports = function(){
 	var _this = this;
-
-	this.personality;
-
-	fs.readFile(process.argv[2], 'utf8', function(err, content){
-		  if (err) {
-		    return console.log(err);
-		  }
-
-		  _this.personality = JSON.parse(content);
-		  _this.request = _(_this.request).extend(_this.personality.request);
-
-		  twit = new twitter(_this.personality.credentials);
-
-		  _this.start();
-	});
 
 	this.request = {
 		track		: '',
@@ -99,22 +81,9 @@ module.exports = function(){
 	}
 
 	setInterval(function(){
-		socket.emit("set report", _this.report())
+		_this.socket.emit("set report", _this.report())
 		_this.update_uptime();
 	},1000);
-
-	socket.on('send keywords-group', function(kws){
-		// detect change. could be done more properly
-		if(	_this.request.track != kws.join(',') ){
-			_this.request.track = kws.join(',');
-			
-			if(_stream){
-				_this.restart();
-			}
-
-			console.log(_this.request);
-		}
-	});	
 
 	this.restart = function(){
 		this.count_restart++;
@@ -129,6 +98,9 @@ module.exports = function(){
 	var _stream;
 
 	this.start = function(){
+
+		_this.request = _(_this.request).extend(_this.personality.request);
+		twit = new twitter(_this.personality.credentials);
 
 		console.log(_this.request);
 		console.log(_this.personality.request);
@@ -152,7 +124,7 @@ module.exports = function(){
 					_this.count++;
 					_this.update_count();
 
-					socket.emit('tweet', data);
+					_this.socket.emit('tweet', data);
 
 //					process.stdout.write(cli.moveTo(8,4));
 //					console.log(data.text);
@@ -171,5 +143,20 @@ module.exports = function(){
 //				setTimeout(stream.destroy, 5 * 1000);
 			}
 		);
+
+		_this.socket.on('send keywords-group', function(kws){
+			// detect change. could be done more properly
+			if(	_this.request.track != kws.join(',') ){
+				_this.request.track = kws.join(',');
+				
+				if(_stream){
+					_this.restart();
+				}
+
+				console.log(_this.request);
+			}
+		});
 	}
+
+	model.call(this, process.argv[2]);
 }()

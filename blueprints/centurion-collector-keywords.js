@@ -1,5 +1,4 @@
-var io = require('socket.io-client');
-var socket = io.connect('http://localhost:3010');
+var model = require('./model');
 
 var _ = require('underscore');
 
@@ -10,22 +9,26 @@ module.exports = function(personality){
 
 	var all_keywords = []
 
-	socket.on('connection', function(){
-		socket.emit('listen room', 'keywords');
-	});
+	this.start = function(){
 
-	socket.on('send keywords', function( kw ){
-		var before = all_keywords;
+		_this.socket.on('connection', function(){
+			_this.socket.emit('listen room', 'keywords');
+		});
 
-		all_keywords = _(all_keywords).union(kw);
+		_this.socket.on('send keywords', function( kw ){
+			var before = all_keywords;
 
-		if(before.join(',') != all_keywords.join(',')){
-			console.log(all_keywords);
+			all_keywords = _(all_keywords).union(kw);
 
-			socket.emit( 'send keywords-group', all_keywords );
-		}
+			if(before.join(',') != all_keywords.join(',')){
+				console.log(all_keywords);
 
-	});
+				_this.socket.emit( 'send keywords-group', all_keywords );
+			}
+
+		});
+
+	}
 
 	this.report = function(){
 		return {
@@ -39,7 +42,9 @@ module.exports = function(personality){
 	}, 10000);
 
 	setInterval(function(){
-		socket.emit("set report", _this.report())
-		socket.emit( 'send keywords-group', all_keywords );
+		_this.socket.emit("set report", _this.report())
+		_this.socket.emit( 'send keywords-group', all_keywords );
 	}, 1000);
+
+	model.call(this, process.argv[2]);
 }()

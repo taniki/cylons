@@ -1,33 +1,11 @@
-var io = require('socket.io-client');
-var socket = io.connect('http://localhost:3010');
-
 var model = require('./model');
-
-var fs = require('fs');
 
 var _ = require('underscore');
 
 var raider = function(){
 	var _this = this;
 
-	var personality;
 	var keywords;
-
-	fs.readFile(process.argv[2], 'utf8', function(err, content){
-		  if (err) {
-		    return console.log(err);
-		  }
-
-		  personality = JSON.parse(content);
-		  keywords	  = personality.keywords;
-
-		  _this.start();
-	});
-
-	socket.on('connection', function(){
-		socket.emit('join_room', 'keywords');
-		socket.emit('join_room', 'warehouse');
-	});
 
 	this.current = {
 		second  : 0,
@@ -48,9 +26,15 @@ var raider = function(){
 	}
 
 	this.start = function(){
+		_this.socket.on('connection', function(){
+			_this.socket.emit('join_room', 'keywords');
+			_this.socket.emit('join_room', 'warehouse');
+		});
+
+		keywords = _this.personality.keywords;
 
 		// Collect and tag tweets
-		socket.on('tweet', function(data){
+		_this.socket.on('tweet', function(data){
 
 			var ok = false;
 			var matches = [];
@@ -124,14 +108,12 @@ var raider = function(){
 		}, 24 * 60 * 60 * 1000);
 
 		setInterval(function(){
-			socket.emit("set report", _this.report())
-			socket.emit("send keywords", keywords);
+			_this.socket.emit("set report", _this.report())
+			_this.socket.emit("send keywords", keywords);
 		}, 1000);
-
-
 	}
-}
 
-// raider.prototype = new model(process.argv[2]);
+	model.call(this, process.argv[2]);
+}
 
 module.exports = new raider();
