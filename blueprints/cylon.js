@@ -1,4 +1,5 @@
-var fs = require('fs');
+var fs	 = require('fs');
+var fork = require('child_process').fork;
 
 function cylon(model, personality){
 	var _this = this;
@@ -8,27 +9,22 @@ function cylon(model, personality){
 
 	this.body = null;
 
+	fs.watch(_this.personality, function(e ,f){
+		_this.reload();
+	});
+
 	this.start = function(){
 		console.log("bzz bzz");
 
-		fs.readFile(this.personality, 'utf8', function (err, personality) {
-		  if (err) {
-		    return console.log(err);
-		  }
+        _this.body = fork('./blueprints/'+_this.model, [personality]);
 
-
-		  fs.watch(_this.personality, function(e ,f){
-		  	_this.reload();
-		  });
-
-		  var personality = JSON.parse(personality);
-
-          _this.body = require('./'+_this.model)(personality);
-		});
 	}
 
 	this.reload = function(){
 		console.log('dying');
+
+		_this.body.kill();
+		_this.start();
 	}
 }
 
