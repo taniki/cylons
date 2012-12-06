@@ -130,33 +130,23 @@ module.exports = function(){
 //					console.log(data.text);
 
 				});
-
-				stream.on('end', function (response) {
-		//			console.log('restart me');
-//					_this.start();
-				});
-
-				stream.on('close', function (response) {
-		//			console.log('arrgghhh');
-				});
-
-//				setTimeout(stream.destroy, 5 * 1000);
 			}
 		);
-
-		_this.socket.on('send keywords-group', function(kws){
-			// detect change. could be done more properly
-			if(	_this.request.track != kws.join(',') ){
-				_this.request.track = kws.join(',');
-				
-				if(_stream){
-					_this.restart();
-				}
-
-				console.log(_this.request);
-			}
-		});
 	}
 
 	model.call(this, process.argv[2]);
+
+	_this.socket.on('send keywords-group', function(kws){
+		// detect change. could be done more properly
+		if(	_this.request.track != kws.join(',') ){
+			_this.request.track = kws.join(',');
+			
+			if(_stream){
+				_this.reload();
+			}
+
+			console.log(_this.request);
+		}
+	});
+
 }()

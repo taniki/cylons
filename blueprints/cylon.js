@@ -18,6 +18,11 @@ function cylon(model, personality){
 
         _this.body = fork('./blueprints/'+_this.model, [personality]);
 
+        _this.body.on('message', function(msg){
+        	if(msg.command == "reload"){
+        		_this.reload();
+        	}
+        });      
 	}
 
 	this.reload = function(){

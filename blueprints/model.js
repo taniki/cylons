@@ -23,6 +23,12 @@ var model = function(personality, cb){
 		});
 	}
 
+	this.reload = function(){
+		process.send({
+			command : "reload"
+		});
+	}
+
 	this.load_personality(personality);
 }
 
