@@ -42,4 +42,4 @@ module.exports = function(personality){
 		socket.emit("set report", _this.report())
 		socket.emit( 'send keywords-group', all_keywords );
 	}, 1000);
-}
+}()

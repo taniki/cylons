@@ -1,3 +1,5 @@
+var fs = require('fs');
+
 var io = require('socket.io-client');
 var socket = io.connect('http://localhost:3010');
 
@@ -8,8 +10,23 @@ var _ = require('underscore');
 var cli = require('cli-color');
 var moment = require('moment');
 
-module.exports = function(personality){
+module.exports = function(){
 	var _this = this;
+
+	this.personality;
+
+	fs.readFile(process.argv[2], 'utf8', function(err, content){
+		  if (err) {
+		    return console.log(err);
+		  }
+
+		  _this.personality = JSON.parse(content);
+		  _this.request = _(_this.request).extend(_this.personality.request);
+
+		  twit = new twitter(_this.personality.credentials);
+
+		  _this.start();
+	});
 
 	this.request = {
 		track		: '',
@@ -17,7 +34,7 @@ module.exports = function(personality){
 		locations	: ' '
 	}
 
-	this.request = _(this.request).extend(personality.request);
+	this.request;
 
 	this.time_start = new moment();
 
@@ -25,7 +42,7 @@ module.exports = function(personality){
 	this.seconds = 0;
 	this.count_restart = 0;
 
-	var twit = new twitter(personality.credentials);
+	var twit;
 
 	console.log(cli.reset);
 
@@ -114,7 +131,7 @@ module.exports = function(personality){
 	this.start = function(){
 
 		console.log(_this.request);
-		console.log(personality.request);
+		console.log(_this.personality.request);
 
 		for(var k in _this.request){
 			if (_this.request[k] == '') {
@@ -124,9 +141,8 @@ module.exports = function(personality){
 
 		console.log(_this.request);
 
-
 		twit.stream(
-			personality.endpoint,
+			_this.personality.endpoint,
 			_this.request,
 			function(stream) {
 				_this.count = 0;
@@ -156,6 +172,4 @@ module.exports = function(personality){
 			}
 		);
 	}
-
-	this.start();
-}
+}()
