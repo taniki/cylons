@@ -14,8 +14,13 @@ var crew = {};
 var inactives = {};
 
 var collectors = [
-	'send keywords',
-	'send keywords-group'
+	'keywords',
+	'keywords-group'
+];
+
+var setters = [
+	'report',
+	'type'
 ];
 
 io.sockets.on('connection', function (socket) {
@@ -27,13 +32,15 @@ io.sockets.on('connection', function (socket) {
 	});
 
 	_(collectors).each(function(collection){
-		socket.on(collection, function(msg){
-			socket.broadcast.emit(collection, msg);
+		socket.on("send "+collection, function(msg){
+			socket.broadcast.emit("send "+collection, msg);
 		});
 	});
 
-	socket.on('set report', function(report){
-		socket.set('report', report);
+	setters.forEach(function(s){
+		socket.on('set '+s, function(setting){
+			socket.set(s, setting);
+		});
 	});
 
 	socket.on('disconnect', function(){
@@ -65,13 +72,17 @@ io.sockets.on('connection', function (socket) {
 function update_crew(){
 	console.log(cli.reset);
 
-	console.log(_(crew).pluck('id'));
-
 	_(crew).each(function(c){
-		c.get('report', function(err, report){
-			console.log(report);
-		})
+		console.log(c.store.data.type);
 	});
+
+//	console.log(_(crew).pluck('store.data.type'));
+
+	// _(crew).each(function(c){
+	// 	c.get('report', function(err, report){
+	// 		console.log(report);
+	// 	})
+	// });
 }
 
 setInterval(function(){

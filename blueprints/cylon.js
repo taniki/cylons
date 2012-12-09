@@ -1,6 +1,8 @@
 var fs	 = require('fs');
 var fork = require('child_process').fork;
 
+var cli = require('cli-color');
+
 function cylon(model, personality){
 	var _this = this;
 
@@ -13,10 +15,14 @@ function cylon(model, personality){
 		_this.reload();
 	});
 
-	this.start = function(){
-		console.log("bzz bzz");
+	fs.watch(_this.model, function(e ,f){
+		_this.reload();
+	});
 
-        _this.body = fork('./blueprints/'+_this.model, [personality]);
+	this.start = function(){
+		console.log(cli.greenBright(' ● ') + "active");
+
+        _this.body = fork(_this.model, [personality]);
 
         _this.body.on('message', function(msg){
         	if(msg.command == "reload"){
@@ -26,7 +32,7 @@ function cylon(model, personality){
 	}
 
 	this.reload = function(){
-		console.log('dying');
+		console.log(cli.redBright(' ● ') + "dying");
 
 		_this.body.kill();
 		_this.start();

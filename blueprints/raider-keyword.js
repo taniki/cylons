@@ -113,7 +113,7 @@ var raider = function(){
 		}, 1000);
 	}
 
-	model.call(this, process.argv[2]);
+	model.call(this, process.argv[2], process.argv[1]);
 }
 
 module.exports = new raider();

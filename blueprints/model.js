@@ -3,7 +3,9 @@ var fs = require('fs');
 var io = require('socket.io-client');
 var socket = io.connect('http://localhost:3010');
 
-var model = function(personality, cb){
+var cli = require('cli-color');
+
+var model = function(personality, body){
 	var _this = this;
 
 	this.socket = socket;
@@ -29,10 +31,19 @@ var model = function(personality, cb){
 		});
 	}
 
+	this.socket.on('connect', function(){
+		console.log(cli.xterm(12)(' ● ') + "connected")
+	});
+
 	this.load_personality(personality);
+
+	this.set_type = function(){
+		var b = body.split("/");
+		b = b[b.length - 1];
+		b = b.split("-")[0];
+
+		_this.socket.emit("set type", b);
+	}();
 }
-
-
-
 
 module.exports = model;
