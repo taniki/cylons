@@ -1,10 +1,26 @@
 if (Meteor.isClient) {
 
-  setInterval(function(){
-    $.get('http://localhost:3009/crew',function(data){
-     Session.set('crew', data);
+  $(document).ready(function(){
+
+    var socket = io.connect('http://localhost:3010');
+
+    socket.on('connect', function(){
+      socket.emit("set type", "web ui");
     });
-  }, 500);
+
+    socket.on('crew', function(crew){
+      crew.forEach(function(c){
+        c.type = c.type.replace(' ', '-');
+      });
+
+      Session.set('crew', crew);
+    });
+
+    setInterval(function(){
+      socket.emit('get crew');
+    }, 500);
+
+  });
 
   Template.list_cylons.cylons = function(){
     return Session.get('crew');

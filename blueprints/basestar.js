@@ -24,11 +24,25 @@ var setters = [
 ];
 
 io.sockets.on('connection', function (socket) {
-
 	crew[socket.id] = socket;
 
-	socket.on('crew', function(){
-		socket.send(crew);
+	function crew_list(){
+		var c = [];
+
+		_(crew).each(function(m){
+			var m = {
+				socket_id : m.id,
+				type : m.store.data.type || "anonymous"
+			}
+
+			c.push(m);
+		});
+
+		return c;
+	}
+
+	socket.on('get crew', function(){
+		socket.emit("crew", crew_list());
 	});
 
 	_(collectors).each(function(collection){
@@ -86,7 +100,7 @@ function update_crew(){
 }
 
 setInterval(function(){
-	update_crew();	
+//	update_crew();	
 }, 500);
 
 app.get('/crew', function(req, res){

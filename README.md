@@ -16,3 +16,7 @@ cylons are neo-platonicans adaptative (soon evolving (argh)) beings. They are co
 - raiders : target and swarm behaviour
 - significant : interactions with humanz
 - humanz : do they dream of fleshy bits ?
+
+## ideas 
+
+- use wikipedia to generate random names

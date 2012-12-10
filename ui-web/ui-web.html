@@ -1,5 +1,7 @@
 <head>
-  <title>dashboard</title>
+ 	<title>dashboard</title>
+
+	<script src="http://localhost:3010/socket.io/socket.io.js"></script>
 </head>
 
 <body>
@@ -10,7 +12,7 @@
 <template name="list_cylons">
 
 <ul>
-{{#each cylons}}<li>{{ this }}</li>{{/each}}
+{{#each cylons}}<li class="{{ this.type }}">{{ this.socket_id }}</li>{{/each}}
 </ul>
 
 </template>
