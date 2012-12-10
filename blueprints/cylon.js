@@ -11,12 +11,18 @@ function cylon(model, personality){
 
 	this.body = null;
 
-	fs.watch(_this.personality, function(e ,f){
-		_this.reload();
-	});
+	var parts = [
+		'./blueprints/model.js',
+		_this.personality,
+		_this.body
+	];
 
-	fs.watch(_this.model, function(e ,f){
-		_this.reload();
+//	parts.forEach(relaunch_on_change(p));
+
+	parts.forEach(function(p){
+		fs.watch(p, function(e ,f){
+			_this.reload();
+		});
 	});
 
 	this.start = function(){
