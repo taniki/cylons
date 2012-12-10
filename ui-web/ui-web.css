@@ -5,7 +5,9 @@ body { font-size: 16px; }
 
 ul li:before { vertical-align: baseline; content: '\25CF'; font-size: 1em; padding-right : 0.5em; }
 
-ul li.raider:before { color : red; }
-ul li.web-ui:before { color : black; }
+ul li.raider:before		{ color : #9E1D43; }
+ul li.centurion:before	{ color : #E62E60; }
+ul li.hybrid:before		{ color : #235BBE; }
+ul li.web-ui:before		{ color : #FFD505; }
 
 ul li { padding-bottom : 4px; }
