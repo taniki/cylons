@@ -3,6 +3,8 @@ var fork = require('child_process').fork;
 
 var cli = require('cli-color');
 
+var moment = require('moment');
+
 function cylon(model, personality){
 	var _this = this;
 
@@ -26,7 +28,7 @@ function cylon(model, personality){
 	});
 
 	this.start = function(){
-		console.log(cli.greenBright(' ● ') + "active");
+		console.log(cli.xterm(238)(moment().format('hh:mm:ss')) + cli.greenBright(' ● ') + "active");
 
         _this.body = fork(_this.model, [personality]);
 
@@ -38,7 +40,7 @@ function cylon(model, personality){
 	}
 
 	this.reload = function(){
-		console.log(cli.redBright(' ● ') + "dying");
+		console.log(cli.xterm(238)(moment().format('hh:mm:ss')) + cli.redBright(' ● ') + "dying");
 
 		_this.body.kill();
 		_this.start();

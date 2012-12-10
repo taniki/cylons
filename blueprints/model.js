@@ -5,6 +5,8 @@ var socket = io.connect('http://localhost:3010');
 
 var cli = require('cli-color');
 
+var moment = require('moment');
+
 var model = function(personality, body, identity){
 	var _this = this;
 
@@ -38,7 +40,7 @@ var model = function(personality, body, identity){
 
 	this.socket.on('connect', function(){
 		_this.set_type();
-		console.log(cli.xterm(12)(' ● ') + "connected")
+		console.log(cli.xterm(238)(moment().format('hh:mm:ss')) + cli.xterm(12)(' ● ') + "connected")
 	});
 
 	this.load_personality(personality);
