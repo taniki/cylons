@@ -12,9 +12,9 @@ function cylon(model, personality){
 	this.body = null;
 
 	var parts = [
-		'./blueprints/model.js',
+		'blueprints/model.js',
 		_this.personality,
-		_this.body
+		_this.model
 	];
 
 //	parts.forEach(relaunch_on_change(p));
