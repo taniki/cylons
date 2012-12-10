@@ -46,5 +46,5 @@ module.exports = function(personality){
 		_this.socket.emit( 'send keywords-group', all_keywords );
 	}, 1000);
 
-	model.call(this, process.argv[2]);
+	model.call(this, process.argv[2], process.argv[1]);
 }()

@@ -44,5 +44,5 @@ module.exports = function(personality){
 		_this.socket.emit("set report", _this.report())
 	},1000);
 
-	model.call(this, process.argv[2]);	
+	model.call(this, process.argv[2], process.argv[1]);	
 }()

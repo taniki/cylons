@@ -134,7 +134,7 @@ module.exports = function(){
 		);
 	}
 
-	model.call(this, process.argv[2]);
+	model.call(this, process.argv[2], process.argv[1]);
 
 	_this.socket.on('send keywords-group', function(kws){
 		// detect change. could be done more properly
