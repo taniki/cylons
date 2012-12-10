@@ -28,7 +28,7 @@ function cylon(model, personality){
 	});
 
 	this.start = function(){
-		console.log(cli.xterm(238)(moment().format('hh:mm:ss')) + cli.greenBright(' ● ') + "active");
+		console.log(cli.xterm(238)(moment().format('hh:mm:ss')) + cli.greenBright(' ● ') + "active " + cli.xterm(238)( parseInt( process.memoryUsage().heapUsed / 1024 ) + "kb" ));
 
         _this.body = fork(_this.model, [personality]);
 
