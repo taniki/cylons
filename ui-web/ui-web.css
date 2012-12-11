@@ -1,11 +1,21 @@
 /* CSS declarations go here */
-body { font-size: 16px; }
+body { font-size: 16px; font-family : arial; }
 
+h3 { font-size : 12px; margin-top : 2em; margin-bottom : 4px; }
+
+/*
 ul li:before { vertical-align: baseline; content: '\25CF'; font-size: 1em; padding-right : 0.5em; }
 
 ul li.raider:before		{ color : #9E1D43; }
 ul li.centurion:before	{ color : #E62E60; }
 ul li.hybrid:before		{ color : #235BBE; }
 ul li.web-ui:before		{ color : #FFD505; }
+*/
 
-ul li { padding-bottom : 4px; }
+
+ul li { height : 16px; font : normal 14px/16px arial; padding-bottom : 4px; border-left: 4px solid black; padding : 2px 4px; }
+
+ul li.raider	{ border-color : #9E1D43; }
+ul li.centurion	{ border-color : #E62E60; }
+ul li.hybrid	{ border-color : #235BBE; }
+ul li.web-ui	{ border-color : #FFD505; }

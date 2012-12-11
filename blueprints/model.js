@@ -38,9 +38,9 @@ var model = function(personality, body, identity){
 		});
 	}
 
-	this.socket.on('connect', function(){
+	this.socket.on('welcome', function(host){
 		_this.set_type();
-		console.log(cli.xterm(238)(moment().format('hh:mm:ss')) + cli.xterm(12)(' ● ') + "connected")
+		console.log(cli.xterm(238)(moment().format('hh:mm:ss')) + cli.xterm(12)(' ● ') + "connected: "+host.name)
 	});
 
 	this.socket.on('disconnect', function(){
