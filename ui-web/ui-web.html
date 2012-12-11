@@ -11,8 +11,14 @@
 
 <template name="list_cylons">
 
-<ul>
-{{#each cylons}}<li class="{{ this.type }}">{{ this.socket_id }}</li>{{/each}}
+<h3>active</h3>
+<ul id="cylons_active">
+{{#each cylons_active}}<li class="{{ this.type }}">{{ this.socket_id }}</li>{{/each}}
+</ul>
+
+<h3>inactive</h3>
+<ul id="cylons_inactive">
+{{#each cylons_inactive}}<li class="{{ this.type }}">{{ this.socket_id }}</li>{{/each}}
 </ul>
 
 </template>

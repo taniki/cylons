@@ -22,10 +22,21 @@ if (Meteor.isClient) {
 
   });
 
-  Template.list_cylons.cylons = function(){
-    return Session.get('crew');
+  Template.list_cylons.cylons_active = function(){
+    var c = Session.get('crew');
+
+    c = _(c).filter(function(m){ return m.active });
+
+    return _(c).sortBy(function(m){ return m.type });
   }
 
+  Template.list_cylons.cylons_inactive = function(){
+    var c = Session.get('crew');
+
+    c = _(c).filter(function(m){ return !m.active });
+
+    return _(c).sortBy(function(m){ return m.type });
+  }
 }
 
 if (Meteor.isServer) {

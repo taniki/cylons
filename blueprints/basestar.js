@@ -26,17 +26,30 @@ var setters = [
 io.sockets.on('connection', function (socket) {
 	crew[socket.id] = socket;
 
+	function registerize(m){
+		var member = {
+			active : false,
+//			last_seen : new Date.getTime(),
+			name : undefined,
+			socket_id : m.id,
+			type : m.store.data.type || "anonymous"
+		}
+
+		return member;		
+	}
+
 	function crew_list(){
 		var c = [];
 
 		_(crew).each(function(m){
-			var m = {
-				socket_id : m.id,
-				type : m.store.data.type || "anonymous"
-			}
+			var member = registerize(m);
 
-			c.push(m);
+			member.active = true;
+
+			c.push(member);
 		});
+
+		c = _(c).union(_(inactives).toArray());
 
 		return c;
 	}
@@ -58,7 +71,11 @@ io.sockets.on('connection', function (socket) {
 	});
 
 	socket.on('disconnect', function(){
-		delete crew[socket.id];		
+		delete crew[socket.id];
+
+		var m = registerize(socket);
+
+		inactives[socket.id] = m;
 	});
 
 	socket.emit('welcome',{ name: 'basestar-1' });
@@ -102,25 +119,3 @@ function update_crew(){
 setInterval(function(){
 //	update_crew();	
 }, 500);
-
-app.get('/crew', function(req, res){
-    res.header("Access-Control-Allow-Origin", "*");
-	res.send(_(crew).pluck('id'));
-});
-
-app.get('/cylon/:socket', function(req, res){
-	var cylon_socket  = req.params.socket;
-
-	var cylon_data = {
-		info  : {},
-		report: {}
-	};
-
-    res.header("Access-Control-Allow-Origin", "*");
-
-    crew[cylon_socket].get('report', function(err, report){
-    	cylon_data.report = report;
-   	
-    	res.send(cylon_data);
-    });
-});

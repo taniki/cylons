@@ -43,6 +43,11 @@ var model = function(personality, body, identity){
 		console.log(cli.xterm(238)(moment().format('hh:mm:ss')) + cli.xterm(12)(' ● ') + "connected")
 	});
 
+	this.socket.on('disconnect', function(){
+		console.log(cli.xterm(238)(moment().format('hh:mm:ss')) + cli.xterm(111)(' ● ') + "disconnected")
+	});
+
+
 	this.load_personality(personality);
 
 	this.set_type = function(){
