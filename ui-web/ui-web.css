@@ -1,6 +1,4 @@
 /* CSS declarations go here */
-@import url('reset.css');
-
 body { font-size: 16px; }
 
 ul li:before { vertical-align: baseline; content: '\25CF'; font-size: 1em; padding-right : 0.5em; }
